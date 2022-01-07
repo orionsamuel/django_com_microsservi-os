@@ -19,8 +19,15 @@ class Pizzeria(models.Model):
 
 
 class Pizza(models.Model):
+    CHOICES = (
+        ('CA', 'Carne'),
+        ('VE', 'Vegetariana'),
+        ('VG', 'Vegana'),
+        ('DC', 'Doce')
+    )
     title = models.CharField(max_length=120)
     description = models.CharField(max_length=120)
+    type = models.CharField(max_length=20, choices=CHOICES, default="")
     thumbnail_url = models.URLField(default="")
     approved = models.BooleanField(default=False)
     creator = models.ForeignKey(Pizzeria, on_delete=models.CASCADE, default="")
