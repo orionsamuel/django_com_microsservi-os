@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pizza
+from .models import Pizza, Pizzeria
 
 
 class PizzaAdmin(admin.ModelAdmin):
@@ -7,4 +7,10 @@ class PizzaAdmin(admin.ModelAdmin):
     search_fields = ['title']
 
 
-admin.site.register(Pizza)
+class PizzeriaAdmin(admin.ModelAdmin):
+    list_display = ['name', 'owner', 'address']
+    search_fields = ['name']
+
+
+admin.site.register(Pizza, PizzaAdmin)
+admin.site.register(Pizzeria, PizzeriaAdmin)
