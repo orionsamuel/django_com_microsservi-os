@@ -5,8 +5,8 @@ from user.models import UserProfile
 class Pizzeria(models.Model):
     name = models.CharField(max_length=120, default="")
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    address = models.CharField(max_length=512)
-    phone = models.CharField(max_length=40)
+    address = models.CharField(max_length=512, default="", blank=True)
+    phone = models.CharField(max_length=40, default="", blank=True)
 
     def __str__(self):
         return self.name
@@ -26,9 +26,9 @@ class Pizza(models.Model):
         ('DC', 'Doce')
     )
     title = models.CharField(max_length=120)
-    description = models.CharField(max_length=120)
+    description = models.CharField(max_length=120, blank=True)
     type = models.CharField(max_length=20, choices=CHOICES, default="")
-    thumbnail_url = models.URLField(default="")
+    thumbnail_url = models.URLField(default="", blank=True)
     approved = models.BooleanField(default=False)
     creator = models.ForeignKey(Pizzeria, on_delete=models.CASCADE, default="")
 

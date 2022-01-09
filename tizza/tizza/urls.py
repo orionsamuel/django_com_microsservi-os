@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth import views as auth_views
+from pizza.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home, name='home'),
+    path('entrar/', auth_views.LoginView.as_view(template_name='login.html', next_page='/pizzas/7'), name='login'),
+    path('sair/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('pizzas/', include('pizza.urls')),
+    path('user/', include('user.urls')),
 ]
