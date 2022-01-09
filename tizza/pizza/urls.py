@@ -1,7 +1,7 @@
 from django.urls import include, path
-from .views import index
+from .views import create
 
 
 urlpatterns = [
-    path('<int:pid>', index, name='pizza'),
+    path('create/', create, name='create')
 ]

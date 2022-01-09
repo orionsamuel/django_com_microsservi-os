@@ -17,8 +17,8 @@
     <div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
         <a class="pure-menu-heading" href="{% url 'home' %}">Tizza</a>
         <ul>
-            <li class="pure-menu-selected"><a href="{% url 'home' %}">Início</a></li>
             {% if user.is_authenticated %}
+            <li class="pure-menu-selected"><a href="{% url 'home' %}">Início</a></li>
             <li><a href="{% url 'logout' %}">Sair</a></li>
             {% endif %}
         </ul>

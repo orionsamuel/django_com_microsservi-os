@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <div class="form-buscar-container col-8 m-auto pt-5 pb-2 text-center">
     <form class="buscar-pizza" method="get">
@@ -13,12 +13,74 @@
     </form>
 </div>
 
+{% if user.is_staff %}
+<div class="modal fade" id="modalCadastro" tabindex="-1" aria-labelledby="modalCadastro" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Cadastro</h5>
+        </div>
+        <div class="modal-body">
+          <form name="form" id="form" action="/pizzas/create/" method="post">
+            {% csrf_token %}
+            {{form.non_field_errors}}
+            <div class="checkEdit">
+              <p><input type="hidden" id="check_edit" name="check_edit" value="false"></p>
+            </div>
+            <div class="id-wrapper">
+              <input type="hidden" class="form-control" id="id-pizza" name="id_pizza" value="">
+            </div>
+            <div class="title-wrapper">
+              {{form.title.errors}}
+              <label class="col-form-label">Nome</label>
+              <p>{{form.title}}</p>
+            </div>
+            <div class="description-wrapper">
+              {{form.description.errors}}
+              <label class="col-form-label">Descrição</label>
+              <p>{{form.description}}</p>
+            </div>
+            <div class="type-wrapper">
+              {{form.type.errors}}
+              <label class="col-form-label">Tipo</label>
+              <p>{{form.type}}</p>
+            </div>
+            <div class="creator-wrapper">
+              {{form.creator.errors}}
+              <label class="col-form-label">Pizzaria</label>
+              <p>{{form.creator}}</p>
+            </div>
+            <p>
+            <div>
+              <button type="submit" id="btn-salvar" class="btn btn-success mt-4"></button>
+            </div>
+            </p>
+          </form>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+</div>
+
+<div div class="col-8 m-auto pt-8 pb-2" align="right">
+    <a href="" id="btn-adicionar" class="btn btn-success" data-bs-toggle="modal"
+      data-bs-target="#modalCadastro"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+        <path
+          d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+        <path fill-rule="evenodd"
+          d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+    </svg> Cadastrar Pizza</a>
+</div>
+{% endif %}
+
 <div class="col-8 m-auto pt-5 text-center">
     <table class="table">
         <thead>
             <tr style="background-color: #3d3c3c; color:#fff">
                 <th scope="col">Pizza</th>
                 <th scope="col">Descrição</th>
+                <th scope="col">Tipo</th>
                 <th scope="col">Pizzaria</th>
             </tr>
         </thead>
@@ -27,10 +89,21 @@
         <tr>
             <td>{{ pizza.title }}</td>
             <td>{{ pizza.description }}</td>
+            {% if pizza.type == 'CA' %}
+            <td>Carne</td>
+            {% elif pizza.type == 'VE' %}
+            <td>Vegetariana</td>
+            {% elif pizza.type == 'VG' %}
+            <td>Vegana</td>
+            {% elif pizza.type == 'DC' %}
+            <td>Doce</td>
+            {% endif %}
             <td>{{ pizza.creator }}</td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script src="{% static 'js/javascript.js' %}"></script>
 {% endblock %}
