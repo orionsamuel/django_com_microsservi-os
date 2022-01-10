@@ -28,7 +28,7 @@ $(document).ready(() => {
 
             if(check === 'true'){
                 $('#btn-salvar').html("Atualizar")
-                document.getElementById('form').action = '/update/'+id+'/'
+                document.getElementById('form').action = '/pizzas/update/'+id+'/'
             }else{
                 $('#btn-salvar').html("Cadastrar")
                 document.getElementById('form').action = '/pizzas/create/'

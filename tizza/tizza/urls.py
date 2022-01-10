@@ -21,7 +21,7 @@ from pizza.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('entrar/', auth_views.LoginView.as_view(template_name='login.html', next_page='/pizzas/7'), name='login'),
+    path('entrar/', auth_views.LoginView.as_view(template_name='login.html', next_page='/'), name='login'),
     path('sair/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('pizzas/', include('pizza.urls')),
     path('user/', include('user.urls')),

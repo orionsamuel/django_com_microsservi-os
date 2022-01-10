@@ -34,3 +34,19 @@ def create(request):
     if form.is_valid():
         form.save()
         return redirect('home')
+
+
+@login_required(login_url='entrar/')
+def update(request, pk):
+    content = {'db': Pizza.objects.get(pk=pk)}
+    form = PizzaForm(request.POST or None, instance=content['db'])
+    if form.is_valid():
+        form.save()
+        return redirect('home')
+
+
+@login_required(login_url='entrar/')
+def delete(request, pk):
+    db = Pizza.objects.get(pk=pk)
+    db.delete()
+    return redirect('home')
