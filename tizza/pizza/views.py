@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Pizza, Pizzeria, Likes
+from .models import Pizza, Likes, Dislikes
 from .forms import PizzaForm
 
 
@@ -23,6 +23,16 @@ def home(request):
         else:
             content['paginator'] = paginator.get_page(pages)
         content['form'] = PizzaForm()
+        content['likes'] = Likes.objects.all().values('pizza')
+        content['dislikes'] = Dislikes.objects.all().values('pizza')
+        content['like'] = []
+        content['dislike'] = []
+        for like in content['likes']:
+            for pizza, id in like.items():
+                content['like'].append(id)
+        for dislike in content['dislikes']:
+            for pizza, id in dislike.items():
+                content['dislike'].append(id)
         return render(request, template_name, content)
     else:
         return render(request, 'login.html')
@@ -48,5 +58,39 @@ def update(request, pk):
 @login_required(login_url='entrar/')
 def delete(request, pk):
     db = Pizza.objects.get(pk=pk)
+    db.delete()
+    return redirect('home')
+
+
+@login_required(login_url='entrar/')
+def set_like(request, pk):
+    pizza = Pizza.objects.get(pk=pk)
+    new_like = Likes.objects.create(user=request.user, pizza=pizza)
+    new_like.save()
+    if Dislikes.objects.filter(pizza=pk):
+        remove_dislike(request, pk)
+    return redirect('home')
+
+
+@login_required(login_url='entrar/')
+def remove_like(request, pk):
+    db = Likes.objects.filter(pizza=pk)
+    db.delete()
+    return redirect('home')
+
+
+@login_required(login_url='entrar/')
+def set_dislike(request, pk):
+    pizza = Pizza.objects.get(pk=pk)
+    new_dislike = Dislikes.objects.create(user=request.user, pizza=pizza)
+    new_dislike.save()
+    if Likes.objects.filter(pizza=pk):
+        remove_like(request, pk)
+    return redirect('home')
+
+
+@login_required(login_url='entrar/')
+def remove_dislike(request, pk):
+    db = Dislikes.objects.filter(pizza=pk)
     db.delete()
     return redirect('home')

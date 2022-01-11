@@ -44,5 +44,14 @@ class Pizza(models.Model):
 class Likes(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
-    like = models.BooleanField(default=False)
-    dislike = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.pizza.title
+
+
+class Dislikes(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.pizza.title
