@@ -14,7 +14,7 @@ class Pizzeria(models.Model):
     class Meta:
         verbose_name = 'Pizzeria'
         verbose_name_plural = 'Pizzerias'
-        ordering = ['owner']
+        ordering = ['name', 'owner']
 
 
 
@@ -38,7 +38,7 @@ class Pizza(models.Model):
     class Meta:
         verbose_name = 'Pizza'
         verbose_name_plural = 'Pizzas'
-        ordering = ['title']
+        ordering = ['creator', 'title']
 
 
 class Likes(models.Model):

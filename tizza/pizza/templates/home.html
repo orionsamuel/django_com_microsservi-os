@@ -48,7 +48,12 @@
             <div class="creator-wrapper">
               {{form.creator.errors}}
               <label class="col-form-label">Pizzaria</label>
-              <p>{{form.creator}}</p>
+                <br>
+                  <select name="pizza-creator">
+                      {% for pizzeria in pizzerias %}
+                      <option value="{{pizzeria.id}}">{{pizzeria.name}}</option>
+                      {% endfor %}
+                  </select>
             </div>
             <p>
             <div>

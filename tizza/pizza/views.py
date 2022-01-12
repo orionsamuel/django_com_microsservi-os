@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Pizza, Likes, Dislikes
+from .models import Pizza, Pizzeria, Likes, Dislikes
 from .forms import PizzaForm
+import json
 
 
 @login_required(login_url='entrar/')
@@ -12,7 +13,10 @@ def home(request):
     if session:
         content = {}
         search = request.GET.get('search')
-        all_pizza = Pizza.objects.all()
+        if request.user.is_staff:
+            all_pizza = Pizza.objects.filter(creator__owner=request.user)
+        else:
+            all_pizza = Pizza.objects.all()
         paginator = Paginator(all_pizza, 10)
         pages = request.GET.get('page')
         content['pizzas'] = paginator.get_page(pages)
@@ -23,6 +27,7 @@ def home(request):
         else:
             content['paginator'] = paginator.get_page(pages)
         content['form'] = PizzaForm()
+        content['pizzerias'] = Pizzeria.objects.filter(owner=request.user)
         content['likes'] = Likes.objects.all().values('pizza')
         content['dislikes'] = Dislikes.objects.all().values('pizza')
         content['like'] = []
@@ -42,7 +47,9 @@ def home(request):
 def create(request):
     form = PizzaForm(request.POST or None)
     if form.is_valid():
-        form.save()
+        pizza = form.save(commit=False)
+        pizza.creator = Pizzeria.objects.get(pk=request.POST["pizza-creator"])
+        pizza.save()
         return redirect('home')
 
 
@@ -51,7 +58,9 @@ def update(request, pk):
     content = {'db': Pizza.objects.get(pk=pk)}
     form = PizzaForm(request.POST or None, instance=content['db'])
     if form.is_valid():
-        form.save()
+        pizza = form.save(commit=False)
+        pizza.creator = Pizzeria.objects.get(pk=request.POST["pizza-creator"])
+        pizza.save()
         return redirect('home')
 
 
