@@ -3,7 +3,7 @@ from .models import Pizza, Pizzeria
 
 
 class PizzaAdmin(admin.ModelAdmin):
-    list_display = ['title', 'description']
+    list_display = ['title', 'description', 'creator']
     search_fields = ['title']
 
 
