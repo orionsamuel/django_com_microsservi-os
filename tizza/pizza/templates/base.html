@@ -19,8 +19,11 @@
         <ul>
             {% if user.is_authenticated %}
             <li class="pure-menu-selected"><a href="{% url 'home' %}">Início</a></li>
-            <li><a href="{% url 'dashboard' %}">Painel</a></li>
-            <li><a href="{% url 'logout' %}">Sair</a></li>
+            {% if not user.is_staff %}
+            <li class="pure-menu-selected"><a href="{% url 'random' %}">Pizzas Aleatórias</a></li>
+            {% endif %}
+            <li class="pure-menu-selected"><a href="{% url 'dashboard' %}">Painel</a></li>
+            <li class="pure-menu-selected"><a href="{% url 'logout' %}">Sair</a></li>
             {% endif %}
         </ul>
     </div>

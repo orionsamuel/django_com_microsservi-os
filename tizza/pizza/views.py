@@ -27,19 +27,30 @@ def home(request):
             content['paginator'] = paginator.get_page(pages)
         content['form'] = PizzaForm()
         content['pizzerias'] = Pizzeria.objects.filter(owner=request.user)
-        content['likes'] = Likes.objects.all().values('pizza')
-        content['dislikes'] = Dislikes.objects.all().values('pizza')
-        content['like'] = []
-        content['dislike'] = []
-        for like in content['likes']:
-            for pizza, id in like.items():
-                content['like'].append(id)
-        for dislike in content['dislikes']:
-            for pizza, id in dislike.items():
-                content['dislike'].append(id)
+        content['like'], content['dislike'] = like_deslike()
         return render(request, template_name, content)
     else:
         return render(request, 'login.html')
+
+
+@login_required(login_url='entrar/')
+def random(request):
+    content = {'pizzas': Pizza.objects.order_by('?')[:5]}
+    template_name = 'random.html'
+    content['like'], content['dislike'] = like_deslike()
+    return render(request, template_name, content)
+
+
+def like_deslike():
+    content = {'likes': Likes.objects.all().values('pizza'),
+               'dislikes': Dislikes.objects.all().values('pizza'), 'like': [], 'dislike': []}
+    for like in content['likes']:
+        for pizza, id in like.items():
+            content['like'].append(id)
+    for dislike in content['dislikes']:
+        for pizza, id in dislike.items():
+            content['dislike'].append(id)
+    return content['like'], content['dislike']
 
 
 @login_required(login_url='entrar/')

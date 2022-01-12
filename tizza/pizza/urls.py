@@ -1,5 +1,5 @@
 from django.urls import include, path
-from .views import create, update, delete, set_like, set_dislike, remove_like, remove_dislike
+from .views import create, update, delete, set_like, set_dislike, remove_like, remove_dislike, random
 
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('remove_like/<int:pk>/', remove_like, name='remove_like'),
     path('set_dislike/<int:pk>/', set_dislike, name='set_dislike'),
     path('remove_dislike/<int:pk>/', remove_dislike, name='remove_dislike'),
+    path('random/', random, name='random'),
 ]
