@@ -124,5 +124,16 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# E-mails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'Simplemooc <s.oliveira.15@hotmail.com>'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.live.com'
+EMAIL_HOST_USER = 's.oliveira.15@hotmail.com'
+EMAIL_HOST_PASSWORD = 'ananindeua07'
+EMAIL_PORT = 25
+
+CONTACT_EMAIL = 'samueloliveiraadv@gmail.com'
+
 # Auth
 AUTH_USER_MODEL = 'user.UserProfile'

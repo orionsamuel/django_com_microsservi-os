@@ -19,6 +19,7 @@
         <ul>
             {% if user.is_authenticated %}
             <li class="pure-menu-selected"><a href="{% url 'home' %}">Início</a></li>
+            <li><a href="{% url 'dashboard' %}">Painel</a></li>
             <li><a href="{% url 'logout' %}">Sair</a></li>
             {% endif %}
         </ul>

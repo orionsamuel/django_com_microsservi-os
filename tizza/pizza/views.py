@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Pizza, Pizzeria, Likes, Dislikes
 from .forms import PizzaForm
-import json
 
 
 @login_required(login_url='entrar/')
